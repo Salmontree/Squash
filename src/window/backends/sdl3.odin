@@ -12,10 +12,10 @@ Data :: struct {
 	should_quit: bool
 }
 
-sdl3_create_window :: proc(width: uint, height: uint, title: string, allocator := context.allocator) -> Window {
+sdl3_create_window :: proc(width: uint, height: uint, title: string, allocator := context.allocator) -> (Window, bool) {
 	data := new(Data, allocator)
 	
-	_ = sdl3.Init({.VIDEO, .EVENTS})
+	if !sdl3.Init({.VIDEO, .EVENTS}) { return Window{}, false }
 
 	sdl3.CreateWindowAndRenderer(strings.clone_to_cstring(title, context.temp_allocator), i32(width), i32(height), {.RESIZABLE}, &data.window, &data.renderer)
 	data.allocator = allocator
@@ -27,9 +27,10 @@ sdl3_create_window :: proc(width: uint, height: uint, title: string, allocator :
 			poll_events = sdl3_poll_events,
 			clear_screen = sdl3_clear_screen,
 			present_screen = sdl3_present_screen,
+			should_quit = sdl3_should_quit,
 		},
 		data = data,
-	}
+	}, true
 }
 
 sdl3_destroy_window :: proc(rawdata: rawptr) {
@@ -61,4 +62,8 @@ sdl3_clear_screen :: proc(rawdata: rawptr) {
 sdl3_present_screen :: proc(rawdata: rawptr) {
 	data := (^Data)(rawdata)
 	sdl3.RenderPresent(data.renderer)
+}
+sdl3_should_quit :: proc(rawdata: rawptr) -> bool {
+	data := (^Data)(rawdata)
+	return data.should_quit
 }

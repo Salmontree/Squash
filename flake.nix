@@ -17,6 +17,7 @@
 				odin
 				ols
 				glfw
+				sdl3
 				libGL
 				libX11
 				libXcursor
@@ -26,9 +27,9 @@
 				libXext
 			];
 
-			# so the odin-compiled binary can find the shared libs at runtime
 			LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (with pkgs; [
 				glfw
+				sdl3
 				libGL
 				libX11
 				libXcursor
