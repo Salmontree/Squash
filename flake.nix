@@ -25,6 +25,7 @@
 				libXinerama
 				libXi
 				libXext
+				jdk8
 			];
 
 			LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (with pkgs; [

@@ -1,18 +1,24 @@
 package main
 
+import "core:net"
+import "core:fmt"
 import "core:log"
 import "window"
+import "client"
 
 main :: proc() {
 	context.logger = log.create_console_logger()
 
 	win, _ := window.create_default_window(1280, 720, "hi")
+	defer window.destroy_window(win)
+
+	conn, err := client.connect("localhost:25565")
+	if err != nil { fmt.printfln("{}", err) }
+	defer client.close(conn)
 
 	for !window.should_quit(win) {
 		window.poll_events(win)
 		window.clear_screen(win)
 		window.present_screen(win)
 	}
-
-	window.destroy_window(win)
 }
