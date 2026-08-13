@@ -176,3 +176,9 @@
 [12:38:53] [Server thread/INFO]: [Ottertree: Set the time to 6000]
 [12:49:51] [Server thread/INFO]: Ottertree lost connection: Disconnected
 [12:49:51] [Server thread/INFO]: Ottertree left the game.
+[14:43:57] [Thread-7/INFO]: UUID of player Ottertree is eab7f41a-b380-3e49-9ff5-a8ba9ca1ec4a
+[14:43:57] [Server thread/INFO]: Ottertree[/127.0.0.1:37014] logged in with entity id 4597 at ([world]-32.86793004482713, 89.90382199895345, 237.2760367209741)
+[16:17:13] [Server thread/INFO]: Ottertree lost connection: Disconnected
+[16:17:13] [Server thread/INFO]: Ottertree left the game.
+[20:10:55] [Thread-3/INFO]: Stopping server
+[20:10:55] [Thread-3/INFO]: Saving players

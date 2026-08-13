@@ -1,4 +1,16 @@
-/.direnv
-/.envrc
-/build
-/squash.code-workspace
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# squash
+build*
+test-server*
+squash.code-workspace
+mc_bot.odin
