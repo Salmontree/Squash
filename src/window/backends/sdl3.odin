@@ -48,7 +48,7 @@ sdl3_poll_events :: proc(rawdata: rawptr) {
 
 	event: sdl3.Event
 	for sdl3.PollEvent(&event) {
-		if event.type == .QUIT || (event.type == .KEY_DOWN && event.key.key == sdl3.K_ESCAPE) {
+		if event.type == .QUIT {
 			data.should_quit = true
 		}
 	}
