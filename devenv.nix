@@ -13,7 +13,12 @@
 		pkgs.sdl3
 	];
 
+	scripts.build-debug.exec = ''
+		odin build src -out:build/debug -debug -extra-linker-flags:"-L${pkgs.sdl3}/lib -collection:lib=lib"
+	'';
+
 	scripts.run.exec = ''
-		odin run src -out:build/debug -debug -keep-executable -extra-linker-flags:"-L${pkgs.sdl3}/lib"
+		build-debug
+		./build/debug
 	'';
 }
