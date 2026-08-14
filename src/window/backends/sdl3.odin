@@ -56,7 +56,7 @@ sdl3_poll_events :: proc(rawdata: rawptr) {
 
 sdl3_clear_screen :: proc(rawdata: rawptr) {
 	data := (^Data)(rawdata)
-	sdl3.SetRenderDrawColorFloat(data.renderer, 0.05, 0.05, 0.1, 1.0)
+	sdl3.SetRenderDrawColorFloat(data.renderer, 0, 0, 0, 1)
 	sdl3.RenderClear(data.renderer)
 }
 sdl3_present_screen :: proc(rawdata: rawptr) {

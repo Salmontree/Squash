@@ -4,6 +4,7 @@ import "core:fmt"
 import "core:log"
 import "window"
 import "client"
+import "assets"
 
 main :: proc() {
 	context.logger = log.create_console_logger()
@@ -11,9 +12,11 @@ main :: proc() {
 	win, _ := window.create_default_window(1280, 720, "hi")
 	defer window.destroy_window(win)
 
-	conn, err := client.connect("localhost:25565")
-	if err != nil { fmt.printfln("{}", err) }
-	defer client.close(conn)
+	assets.scaffold_default_paths()
+
+	// conn, err := client.connect("localhost:25565")
+	// if err != nil { fmt.printfln("{}", err) }
+	// defer client.close(conn)
 
 	for !window.should_quit(win) {
 		window.poll_events(win)

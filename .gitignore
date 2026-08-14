@@ -13,4 +13,3 @@ devenv.local.yaml
 build*
 test-server*
 squash.code-workspace
-mc_bot.odin
