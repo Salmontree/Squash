@@ -13,6 +13,9 @@ main :: proc() {
 	defer window.destroy_window(win)
 
 	assets.scaffold_default_paths()
+	assets.load_options()
+
+	fmt.println(assets.options)
 
 	// conn, err := client.connect("localhost:25565")
 	// if err != nil { fmt.printfln("{}", err) }

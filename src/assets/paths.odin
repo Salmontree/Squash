@@ -16,6 +16,6 @@ get_path_in_data :: proc(path: string, allocator := context.temp_allocator) -> (
 	dpath, err := os.user_data_dir(allocator)
 	defer delete(dpath, allocator)
 
-	if err == nil { return strings.concatenate({dpath, "/squash/", path}, allocator), false }
-	else { return "", true }
+	if err == nil { return strings.concatenate({dpath, "/squash/", path}, allocator), true }
+	else { return "", false }
 }
