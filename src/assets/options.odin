@@ -1,5 +1,6 @@
 package assets
 
+import "core:os"
 import "core:fmt"
 import "lib:toml"
 
@@ -41,5 +42,7 @@ load_options :: proc() {
 }
 
 save_options :: proc() {
+	defer free_all(context.temp_allocator)
 
+	_ = os.write_entire_file_from_string(get_path_in_data("resources/options.toml") or_else "", fmt.tprintf("[video]\nfps = {}\nfov = {}\n\n[audio]\nvolume = {{ master = %.1f }}", options.video.fps, options.video.fov, options.audio.volume.master))
 }

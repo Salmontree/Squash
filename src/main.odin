@@ -14,6 +14,7 @@ main :: proc() {
 
 	assets.scaffold_default_paths()
 	assets.load_options()
+	defer assets.save_options()
 
 	fmt.println(assets.options)
 
