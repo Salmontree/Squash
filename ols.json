@@ -4,6 +4,10 @@
 		{
 			"name": "lib",
 			"path": "lib"
+		},
+		{
+			"name": "src",
+			"path": "src"
 		}
 	],
 	"enable_document_symbols": true,
