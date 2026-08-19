@@ -22,7 +22,7 @@ init :: proc() {
 	store.loaders = make(type_of(store.loaders))
 	sound_init()
 	
-	register(SoundAsset, sound_load, sound_destroy)
+	register(Sound, sound_load, sound_destroy)
 }
 
 quit :: proc() {

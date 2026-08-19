@@ -3,12 +3,12 @@ package assets
 import ma "vendor:miniaudio"
 import "core:strings"
 
-SoundAsset :: struct {
+Sound :: struct {
 	sound: ma.sound,
 	initialized: bool,
-	play: proc(asset: ^SoundAsset),
-	set_volume: proc(asset: ^SoundAsset, volume: f32),
-	set_pitch: proc(asset: ^SoundAsset, pitch: f32),
+	play: proc(asset: ^Sound),
+	set_volume: proc(asset: ^Sound, volume: f32),
+	set_pitch: proc(asset: ^Sound, pitch: f32),
 }
 
 @(private="file")
@@ -37,30 +37,30 @@ sound_quit :: proc() {
 }
 
 @(private="file")
-_sound_play :: proc(asset: ^SoundAsset) {
+_sound_play :: proc(asset: ^Sound) {
 	if asset == nil || !asset.initialized do return
 	ma.sound_seek_to_pcm_frame(&asset.sound, 0)
 	ma.sound_start(&asset.sound)
 }
 @(private="file")
-_sound_set_volume :: proc(asset: ^SoundAsset, volume: f32) {
+_sound_set_volume :: proc(asset: ^Sound, volume: f32) {
 	if asset == nil || !asset.initialized do return
 	ma.sound_set_volume(&asset.sound, clamp(volume, 0.0, 1.0))
 }
 @(private="file")
-_sound_set_pitch :: proc(asset: ^SoundAsset, pitch: f32) {
+_sound_set_pitch :: proc(asset: ^Sound, pitch: f32) {
 	if asset == nil || !asset.initialized do return
 	ma.sound_set_pitch(&asset.sound, max(pitch, 0.0001)) // can't be <= 0 in miniaudio
 }
 
 @(private)
-sound_load :: proc(filepath: string) -> (asset: ^SoundAsset, ok: bool) {
+sound_load :: proc(filepath: string) -> (asset: ^Sound, ok: bool) {
 	if !state.initialized do return nil, false
 
 	cpath, err := strings.clone_to_cstring(filepath, context.temp_allocator)
 	if err != nil do return nil, false
 
-	asset = new(SoundAsset)
+	asset = new(Sound)
 	if asset == nil do return nil, false
 
 	result := ma.sound_init_from_file(
@@ -85,7 +85,7 @@ sound_load :: proc(filepath: string) -> (asset: ^SoundAsset, ok: bool) {
 }
 
 @(private)
-sound_destroy :: proc(asset: ^SoundAsset) {
+sound_destroy :: proc(asset: ^Sound) {
 	ma.sound_uninit(&asset.sound)
 	free(asset)
 }
