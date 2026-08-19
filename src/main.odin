@@ -1,5 +1,6 @@
 package main
 
+import "core:fmt"
 import "src:assets"
 import "core:log"
 import "src:window"

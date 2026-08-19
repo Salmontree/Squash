@@ -21,8 +21,10 @@ init :: proc() {
 	store.destroyers = make(type_of(store.destroyers))
 	store.loaders = make(type_of(store.loaders))
 	sound_init()
+	scaffold_all_paths()
 	
 	register(Sound, sound_load, sound_destroy)
+	register(Options, options_load, options_destroy); load(Options, "options")
 }
 
 quit :: proc() {
@@ -43,8 +45,11 @@ get :: proc($type: typeid, id: string) -> (asset: ^type, ok: bool) {
 	if ret.type == type && ok2 do return (^type)(ret.data), true
 	return nil, false
 }
+get_unsafe :: proc($type: typeid, id: string) -> (asset: ^type) {
+	return (^type)(store.assets[id].data)
+}
 
-load :: proc($type: typeid, id: string, filepath: string) -> (ok: bool) {
+load :: proc($type: typeid, id: string, filepath: string = "") -> (ok: bool) {
 	data, ok2 := store.loaders[type](filepath)
 	if !ok2 do return false
 
