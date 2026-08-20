@@ -15,6 +15,8 @@ main :: proc() {
 	assets.init()
 	defer assets.quit()
 
+	assets.load_resourcepacks()
+
 	for !win->should_quit() {
 		win->present_screen()
 		win->poll_events()
