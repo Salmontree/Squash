@@ -7,6 +7,7 @@ scaffold_all_paths := proc() {
 	os.make_directory_all(get_path("mods", context.temp_allocator))
 	os.make_directory_all(get_path("resources", context.temp_allocator))
 	os.make_directory_all(get_path("config", context.temp_allocator))
+	os.make_directory_all(get_path("logs", context.temp_allocator))
 }
 
 get_data_path :: proc(allocator := context.allocator) -> string {

@@ -1,5 +1,6 @@
 package assets
 
+import "core:log"
 @(private)
 store: struct {
 	assets: map[string]Asset,
@@ -17,13 +18,15 @@ Asset :: struct {
 @(private) Destroyer :: #type proc(asset: rawptr)
 
 init :: proc() {
+	log.info("Initializing asset store")
+
 	store.assets = make(type_of(store.assets))
 	store.destroyers = make(type_of(store.destroyers))
 	store.loaders = make(type_of(store.loaders))
 	scaffold_all_paths()
 	
-	register(Sound, sound_load, sound_destroy); sound_init();
-	register(Options, options_load, options_destroy); load(Options, "options")
+	log.info("Loading options"); register(Options, options_load, options_destroy); load(Options, "options")
+	log.info("Loading sounds"); register(Sound, sound_load, sound_destroy); sound_init();
 }
 
 quit :: proc() {

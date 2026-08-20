@@ -1,5 +1,7 @@
 package window
 
+import "core:log"
+
 Window :: struct {
 	state: rawptr,
 
@@ -10,6 +12,6 @@ Window :: struct {
 }
 
 create_window :: proc(width: int, height: int, title: string) -> (window: Window, ok: bool) {
-	window, ok = sdl3_create_window(width, height, title); if ok do return window, true
+	log.info("Creating SDL3 window"); window, ok = sdl3_create_window(width, height, title); if ok do return window, true
 	return {}, false
 }
