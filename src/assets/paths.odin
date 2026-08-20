@@ -4,9 +4,8 @@ import "core:strings"
 import "core:os"
 
 scaffold_all_paths := proc() {
-	os.make_directory_all(get_path("resourcepacks", context.temp_allocator))
-	os.make_directory_all(get_path("resources", context.temp_allocator))
 	os.make_directory_all(get_path("mods", context.temp_allocator))
+	os.make_directory_all(get_path("resources", context.temp_allocator))
 	os.make_directory_all(get_path("config", context.temp_allocator))
 }
 

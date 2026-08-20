@@ -17,12 +17,19 @@ state: struct {
 	initialized: bool,
 }
 
+@(private="file")
+_sound_load_all :: proc() -> bool {
+	return true
+}
+
 @(private)
 sound_init :: proc() -> bool {
 	if state.initialized do return true
 
 	result := ma.engine_init(nil, &state.engine)
 	if result != .SUCCESS do return false
+
+	if !_sound_load_all() do return false
 
 	state.initialized = true
 	return true

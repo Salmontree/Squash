@@ -20,10 +20,9 @@ init :: proc() {
 	store.assets = make(type_of(store.assets))
 	store.destroyers = make(type_of(store.destroyers))
 	store.loaders = make(type_of(store.loaders))
-	sound_init()
 	scaffold_all_paths()
 	
-	register(Sound, sound_load, sound_destroy)
+	register(Sound, sound_load, sound_destroy); sound_init();
 	register(Options, options_load, options_destroy); load(Options, "options")
 }
 

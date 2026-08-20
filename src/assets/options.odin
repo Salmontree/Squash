@@ -12,7 +12,7 @@ Options :: struct {
 		view_bobbing: bool,
 		render_distance: u8,
 		fullscreen: bool,
-		resourcepacks: [dynamic]string
+		mods: [dynamic]string
 	},
 	audio: struct {
 		volume: struct {
@@ -47,7 +47,7 @@ default_options :: Options {
 		view_bobbing = true,
 		render_distance = 12,
 		fullscreen = false,
-		resourcepacks = nil,
+		mods = nil,
 	},
 	audio = {
 		volume = {
@@ -83,7 +83,7 @@ fps = %.1f
 view_bobbing = {}
 render_distance = {}
 fullscreen = {}
-resourcepacks = {}
+mods = {}
 
 [audio]
 volume.master = %.1f
@@ -98,7 +98,7 @@ volume.ambient = %.1f
 
 [input]
 mouse.sensitivity = {}`,
-	options.video.fov, options.video.fps, options.video.view_bobbing, options.video.render_distance, options.video.fullscreen, options.video.resourcepacks[:], options.audio.volume.master, options.audio.volume.music, options.audio.volume.midi, options.audio.volume.weather, options.audio.volume.blocks, options.audio.volume.hostiles, options.audio.volume.creatures, options.audio.volume.players, options.audio.volume.ambient, options.input.mouse.sensitivity,
+	options.video.fov, options.video.fps, options.video.view_bobbing, options.video.render_distance, options.video.fullscreen, options.video.mods[:], options.audio.volume.master, options.audio.volume.music, options.audio.volume.midi, options.audio.volume.weather, options.audio.volume.blocks, options.audio.volume.hostiles, options.audio.volume.creatures, options.audio.volume.players, options.audio.volume.ambient, options.input.mouse.sensitivity,
 	allocator = context.temp_allocator))
 }
 
@@ -112,13 +112,14 @@ options_load :: proc(filepath: string) -> (asset: ^Options, ok: bool) {
 		asset->save()
 	}
 	else {
+		// TODO: error handling
 		table, _ := toml.parse_file(filepath, context.temp_allocator)
 		asset.video.fov = f32(table["video"].(^toml.Table)["fov"].(f64))
 		asset.video.fps = f32(table["video"].(^toml.Table)["fps"].(f64))
 		asset.video.view_bobbing = table["video"].(^toml.Table)["view_bobbing"].(bool)
 		asset.video.render_distance = u8(table["video"].(^toml.Table)["render_distance"].(i64))
 		asset.video.fullscreen = table["video"].(^toml.Table)["fullscreen"].(bool)
-		asset.video.resourcepacks = make(type_of(asset.video.resourcepacks)); for pack in table["video"].(^toml.Table)["resourcepacks"].(^toml.List) do append(&asset.video.resourcepacks, strings.clone(pack.(string)) or_else "")
+		asset.video.mods = make(type_of(asset.video.mods)); for pack in table["video"].(^toml.Table)["mods"].(^toml.List) do append(&asset.video.mods, strings.clone(pack.(string)) or_else "")
 		asset.audio.volume.master = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["master"].(f64))
 		asset.audio.volume.music = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["music"].(f64))
 		asset.audio.volume.midi = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["midi"].(f64))
@@ -138,7 +139,7 @@ options_load :: proc(filepath: string) -> (asset: ^Options, ok: bool) {
 @(private)
 options_destroy :: proc(asset: ^Options) {
 	asset->save()
-	for resourcepack in asset.video.resourcepacks do delete(resourcepack)
-	delete(asset.video.resourcepacks)
+	for mod in asset.video.mods do delete(mod)
+	delete(asset.video.mods)
 	free(asset)
 }
