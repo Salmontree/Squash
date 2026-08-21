@@ -9,6 +9,7 @@ Options :: struct {
 	video: struct {
 		fov: f32,
 		fps: f32,
+		vsync: bool,
 		view_bobbing: bool,
 		render_distance: u8,
 		fullscreen: bool,
@@ -43,6 +44,7 @@ default_options :: Options {
 	video = {
 		fov = 90.0,
 		fps = 0.0,
+		vsync = false,
 		view_bobbing = true,
 		render_distance = 12,
 		fullscreen = false,
@@ -78,6 +80,7 @@ _options_write :: proc(options: ^Options) {
 `[video]
 fov = %.1f
 fps = %.1f
+vsync = {}
 view_bobbing = {}
 render_distance = {}
 fullscreen = {}
@@ -95,7 +98,7 @@ volume.ambient = %.1f
 
 [input]
 mouse.sensitivity = {}`,
-	options.video.fov, options.video.fps, options.video.view_bobbing, options.video.render_distance, options.video.fullscreen, options.audio.volume.master, options.audio.volume.music, options.audio.volume.midi, options.audio.volume.weather, options.audio.volume.blocks, options.audio.volume.hostiles, options.audio.volume.creatures, options.audio.volume.players, options.audio.volume.ambient, options.input.mouse.sensitivity,
+	options.video.fov, options.video.fps, options.video.vsync, options.video.view_bobbing, options.video.render_distance, options.video.fullscreen, options.audio.volume.master, options.audio.volume.music, options.audio.volume.midi, options.audio.volume.weather, options.audio.volume.blocks, options.audio.volume.hostiles, options.audio.volume.creatures, options.audio.volume.players, options.audio.volume.ambient, options.input.mouse.sensitivity,
 	allocator = context.temp_allocator))
 }
 
@@ -107,28 +110,28 @@ options_load :: proc(filepath: string) -> (asset: ^Options, ok: bool) {
 	if !os.exists(filepath) {
 		asset^ = default_options
 		asset->save()
-	}
-	else {
-		// TODO: error handling
-		table, _ := toml.parse_file(filepath, context.temp_allocator)
-		asset.video.fov = f32(table["video"].(^toml.Table)["fov"].(f64))
-		asset.video.fps = f32(table["video"].(^toml.Table)["fps"].(f64))
-		asset.video.view_bobbing = table["video"].(^toml.Table)["view_bobbing"].(bool)
-		asset.video.render_distance = u8(table["video"].(^toml.Table)["render_distance"].(i64))
-		asset.video.fullscreen = table["video"].(^toml.Table)["fullscreen"].(bool)
-		asset.audio.volume.master = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["master"].(f64))
-		asset.audio.volume.music = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["music"].(f64))
-		asset.audio.volume.midi = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["midi"].(f64))
-		asset.audio.volume.weather = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["weather"].(f64))
-		asset.audio.volume.blocks = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["blocks"].(f64))
-		asset.audio.volume.hostiles = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["hostiles"].(f64))
-		asset.audio.volume.creatures = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["creatures"].(f64))
-		asset.audio.volume.players = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["players"].(f64))
-		asset.audio.volume.ambient = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["ambient"].(f64))
-		asset.input.mouse.sensitivity = u8(table["input"].(^toml.Table)["mouse"].(^toml.Table)["sensitivity"].(i64))
-		asset.save = default_options.save
+		return asset, false
 	}
 
+	// TODO: error handling
+	table, _ := toml.parse_file(filepath, context.temp_allocator)
+	asset.video.fov = f32(table["video"].(^toml.Table)["fov"].(f64))
+	asset.video.fps = f32(table["video"].(^toml.Table)["fps"].(f64))
+	asset.video.vsync = table["video"].(^toml.Table)["vsync"].(bool)
+	asset.video.view_bobbing = table["video"].(^toml.Table)["view_bobbing"].(bool)
+	asset.video.render_distance = u8(table["video"].(^toml.Table)["render_distance"].(i64))
+	asset.video.fullscreen = table["video"].(^toml.Table)["fullscreen"].(bool)
+	asset.audio.volume.master = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["master"].(f64))
+	asset.audio.volume.music = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["music"].(f64))
+	asset.audio.volume.midi = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["midi"].(f64))
+	asset.audio.volume.weather = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["weather"].(f64))
+	asset.audio.volume.blocks = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["blocks"].(f64))
+	asset.audio.volume.hostiles = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["hostiles"].(f64))
+	asset.audio.volume.creatures = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["creatures"].(f64))
+	asset.audio.volume.players = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["players"].(f64))
+	asset.audio.volume.ambient = f32(table["audio"].(^toml.Table)["volume"].(^toml.Table)["ambient"].(f64))
+	asset.input.mouse.sensitivity = u8(table["input"].(^toml.Table)["mouse"].(^toml.Table)["sensitivity"].(i64))
+	asset.save = default_options.save
 	return asset, true
 }
 

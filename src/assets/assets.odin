@@ -1,6 +1,7 @@
 package assets
 
 import "core:log"
+
 @(private)
 store: struct {
 	assets: map[string]Asset,
@@ -25,11 +26,13 @@ init :: proc() {
 	store.loaders = make(type_of(store.loaders))
 	scaffold_all_paths()
 	
-	log.info("Loading options"); register(Options, options_load, options_destroy); load(Options, "options")
-	log.info("Loading sounds"); register(Sound, sound_load, sound_destroy); sound_init();
+	log.info("Loading options"); register(Options, options_load, options_destroy); if !load(Options, "options") do log.error("Couldn't load options, using defaults")
+	log.info("Loading sounds"); register(Sound, sound_load, sound_destroy); if !sound_init() do log.error("Couldn't load sounds")
+	log.info("Loading textures"); register(Texture, texture_load, texture_destroy); if !texture_init() do log.error("Couldn't load textures")
 }
 
 quit :: proc() {
+	log.info("Clearing assets")
 	for _, asset in store.assets do store.destroyers[asset.type](asset.data)
 	sound_quit()
 	delete(store.assets)

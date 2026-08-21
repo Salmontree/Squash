@@ -20,12 +20,12 @@ main :: proc() {
 
 	log.info("Starting up...")
 
-	assets.init()
-	defer assets.quit()
-
 	win, ok := window.create_window(1280, 720, "aeidfhr")
 	defer win->destroy()
 	if !ok { log.fatal("Couldn't create window"); os.exit(-1); }
+
+	assets.init()
+	defer assets.quit()
 
 	for !win->should_quit() {
 		win->present_screen()
