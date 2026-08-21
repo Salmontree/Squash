@@ -9,7 +9,7 @@ devenv.local.yaml
 # pre-commit
 .pre-commit-config.yaml
 
-# squash
+# strawberry
 build*
 test-server*
-squash.code-workspace
+strawberry.code-workspace
