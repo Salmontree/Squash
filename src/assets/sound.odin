@@ -61,8 +61,10 @@ _sound_set_pitch :: proc(asset: ^Sound, pitch: f32) {
 }
 
 @(private)
-sound_load :: proc(filepath: string) -> (asset: ^Sound, ok: bool) {
+sound_load :: proc(files: ..string) -> (asset: ^Sound, ok: bool) {
 	if !state.initialized do return nil, false
+	if len(files) != 1 do return nil, false
+	filepath := files[0]
 
 	cpath, err := strings.clone_to_cstring(filepath, context.temp_allocator)
 	if err != nil do return nil, false

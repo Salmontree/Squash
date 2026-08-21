@@ -103,7 +103,9 @@ mouse.sensitivity = {}`,
 }
 
 @(private)
-options_load :: proc(filepath: string) -> (asset: ^Options, ok: bool) {
+options_load :: proc(files: ..string) -> (asset: ^Options, ok: bool) {
+	if len(files) != 0 do return nil, false
+
 	filepath := get_path("config/options.toml", context.temp_allocator)
 	asset = new(Options)
 

@@ -28,7 +28,10 @@ texture_init :: proc() -> (ok: bool) {
 }
 
 @(private)
-texture_load :: proc(filepath: string) -> (asset: ^Texture, ok: bool) {
+texture_load :: proc(files: ..string) -> (asset: ^Texture, ok: bool) {
+	if len(files) != 1 do return nil, false
+	filepath := files[0]
+
 	asset = new(Texture)
 	if asset == nil do return nil, false
 

@@ -15,7 +15,7 @@ Asset :: struct {
 	type: typeid
 }
 
-@(private) Loader :: #type proc(filepath: string) -> (asset: rawptr, ok: bool)
+@(private) Loader :: #type proc(files: ..string) -> (asset: rawptr, ok: bool)
 @(private) Destroyer :: #type proc(asset: rawptr)
 
 init :: proc() {
@@ -29,6 +29,7 @@ init :: proc() {
 	log.info("Loading options"); register(Options, options_load, options_destroy); if !load(Options, "options") do log.error("Couldn't load options, using defaults")
 	log.info("Loading sounds"); register(Sound, sound_load, sound_destroy); if !sound_init() do log.error("Couldn't load sounds")
 	log.info("Loading textures"); register(Texture, texture_load, texture_destroy); if !texture_init() do log.error("Couldn't load textures")
+	log.info("Loading shaders"); register(Shader, shader_load, shader_destroy); if !shader_init() do log.error("Couldn't load shaders")
 }
 
 quit :: proc() {
@@ -40,7 +41,7 @@ quit :: proc() {
 	delete(store.loaders)
 }
 
-register :: proc($type: typeid, loader: proc(filepath: string) -> (asset: ^type, ok: bool), destroyer: proc(asset: ^type)) {
+register :: proc($type: typeid, loader: proc(files: ..string) -> (asset: ^type, ok: bool), destroyer: proc(asset: ^type)) {
 	store.loaders[type] = Loader(loader)
 	store.destroyers[type] = Destroyer(destroyer)
 }
@@ -54,8 +55,8 @@ get_unsafe :: proc($type: typeid, id: string) -> (asset: ^type) {
 	return (^type)(store.assets[id].data)
 }
 
-load :: proc($type: typeid, id: string, filepath: string = "") -> (ok: bool) {
-	data, ok2 := store.loaders[type](filepath)
+load :: proc($type: typeid, id: string, files: ..string) -> (ok: bool) {
+	data, ok2 := store.loaders[type](..files)
 	if !ok2 do return false
 
 	store.assets[id] = Asset {
