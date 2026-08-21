@@ -12,7 +12,7 @@ scaffold_all_paths := proc() {
 
 get_data_path :: proc(allocator := context.allocator) -> string {
 	dir, _ := os.user_data_dir(allocator)
-	return strings.concatenate({dir, "/squash"}, allocator)
+	return strings.concatenate({dir, "/strawberry"}, allocator)
 }
 
 get_path :: proc(path: string, allocator := context.allocator) -> string {

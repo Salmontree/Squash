@@ -20,7 +20,7 @@ main :: proc() {
 
 	log.info("Starting up...")
 
-	win, ok := window.create_window(1280, 720, "aeidfhr")
+	win, ok := window.create_window(1280, 720, "Strawberry")
 	defer win->destroy()
 	if !ok { log.fatal("Couldn't create window"); os.exit(-1); }
 
