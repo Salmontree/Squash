@@ -31,7 +31,7 @@ main :: proc() {
 	renderer.init()
 	defer renderer.free()
 
-	if !assets.load(assets.Shader, "a", assets.get_path("resources/shaders/asdf.vert", context.temp_allocator), assets.get_path("resources/shaders/asdf.frag", context.temp_allocator)) do log.error("nope")
+	if !assets.load(assets.Shader, "a", assets.get_path("resources/shaders/asdf.prog", context.temp_allocator)) do log.error("nope")
 
 	for !win->should_quit() {
 		renderer.frame()

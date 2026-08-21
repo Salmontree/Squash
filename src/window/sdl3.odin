@@ -26,6 +26,9 @@ sdl3_create_window :: proc(width: int, height: int, title: string) -> (window: W
 
 	gl.load_up_to(3, 3, sdl3.gl_set_proc_address)
 
+	w, h: i32; sdl3.GetWindowSizeInPixels(state.window, &w, &h)
+	gl.Viewport(0, 0, w, h)
+
 	return {
 		state=state,
 
@@ -44,7 +47,9 @@ sdl3_create_window :: proc(width: int, height: int, title: string) -> (window: W
 			for sdl3.PollEvent(&event) {
 				#partial switch event.type {
 					case .QUIT: state.should_quit = true
-					case .WINDOW_RESIZED: gl.Viewport(0, 0, event.window.data1, event.window.data2)
+					case .WINDOW_RESIZED:
+						w, h: i32; sdl3.GetWindowSizeInPixels(state.window, &w, &h)
+						gl.Viewport(0, 0, w, h)
 				}
 			}
 		},
