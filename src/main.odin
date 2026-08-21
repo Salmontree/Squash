@@ -1,5 +1,6 @@
 package main
 
+import "src:renderer"
 import "core:strings"
 import "core:os"
 import "core:time"
@@ -27,7 +28,13 @@ main :: proc() {
 	assets.init()
 	defer assets.quit()
 
+	renderer.init()
+	defer renderer.free()
+
+	if !assets.load(assets.Shader, "a", assets.get_path("resources/shaders/asdf.vert", context.temp_allocator), assets.get_path("resources/shaders/asdf.frag", context.temp_allocator)) do log.error("nope")
+
 	for !win->should_quit() {
+		renderer.frame()
 		win->present_screen()
 		win->poll_events()
 		free_all(context.temp_allocator)
