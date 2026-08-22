@@ -1,5 +1,6 @@
 package main
 
+import "src:world/ecs"
 import "src:renderer"
 import "core:strings"
 import "core:os"
@@ -30,6 +31,9 @@ main :: proc() {
 
 	renderer.init()
 	defer renderer.free()
+
+	ecs.init()
+	defer ecs.deinit()
 
 	if !assets.load(assets.Shader, "a", assets.get_path("resources/shaders/asdf.prog", context.temp_allocator)) do log.error("nope")
 
