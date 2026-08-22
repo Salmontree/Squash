@@ -21,6 +21,7 @@ sdl3_create_window :: proc(width: int, height: int, title: string) -> (window: W
 	sdl3.GL_SetAttribute(.CONTEXT_PROFILE_MASK, i32(sdl3.GLProfile.CORE))
 
 	if state.window = sdl3.CreateWindow(strings.clone_to_cstring(title, context.temp_allocator), i32(width), i32(height), { .RESIZABLE, .OPENGL }); state.window == nil do return {}, false
+	sdl3.SetWindowMinimumSize(state.window, 720, 480)
 	state.ctx = sdl3.GL_CreateContext(state.window); sdl3.GL_MakeCurrent(state.window, state.ctx)
 	state.should_quit = false
 
